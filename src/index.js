@@ -3,7 +3,6 @@ import menuTemplate from './templates/menu.hbs';
 import menu from './templates/menu.json';
 import './styles.css';
 
-
 const refs = {
   input: document.querySelector('.theme-switch__toggle'),
   menu: document.querySelector('.js-menu'),
@@ -12,27 +11,30 @@ const refs = {
 
 if (localStorage.getItem('theme') === theme.DARK) {
   refs.input.checked = true;
+  refs.body.classList.add(theme.DARK);
 } else {
   refs.body.classList.add(theme.LIGHT);
 }
 
-const changeBodyCLass = () => {
-  refs.body.classList.add(localStorage.getItem('theme'));
+const changeBodyCLass = theme => {
+  refs.body.classList.add(theme);
 };
+
 const changeLocalStorage = (set, del) => {
   localStorage.setItem('theme', set);
-  changeBodyCLass();
   refs.body.classList.remove(del);
 };
+
 const themeSwitcher = () => {
   if (refs.input.checked) {
     changeLocalStorage(theme.DARK, theme.LIGHT);
+    changeBodyCLass(theme.DARK);
   } else {
     changeLocalStorage(theme.LIGHT, theme.DARK);
+    changeBodyCLass(theme.LIGHT);
   }
 };
 
-changeBodyCLass();
 refs.input.addEventListener('change', themeSwitcher);
 
 const markup = menuTemplate(menu);
